@@ -38,3 +38,19 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ## Drizzle and Neon
 Neon = Hosts your PostgreSQL database in the cloud
 Drizzle = Helps you write code to read/write data to that Neon database ---> A TypeScript library to interact with databases
+
+## ()--> Bracket in folder name 
+These brackets are just for grouping multiple files for same layout and remove the folder name from the page url.
+
+## FORM COMPONENT IN SHADCN 
+FormField
+ └── FormItem
+      ├── FormLabel
+      ├── FormControl
+      │    └── Input (connected via {...field})
+      └── FormMessage (errors)
+Form Field requires <FormField
+  control={form.control}
+  name="email"
+  render={({ field }) => ( ... )}
+/>
