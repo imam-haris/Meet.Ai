@@ -12,6 +12,7 @@ import {
     FormMessage,
     FormField,
 } from "@/components/ui/form";
+import {FaGithub , FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
@@ -65,6 +66,25 @@ export const SignUpView = () => {
         )
         setPending(false);
     }
+    const onSocial = (provider : "github" | "google") => {
+        setError(null);
+        setPending(true);
+        authClient.signIn.social(
+            {
+                provider: provider
+            },
+            {
+                onSuccess: () => {
+                    router.push("/");
+                },
+                onError: ({ error }) => {
+                    setError(error.message);
+                }
+            }
+        )
+        setPending(false);
+    }
+
     return (
         <div className="flex flex-col gap-6">
             <Card className="overflow-hidden p-0">
@@ -81,7 +101,7 @@ export const SignUpView = () => {
                                     </p>
                                 </div>
                                 {/* Name */}
-                                 <div>
+                                <div>
                                     <FormField
                                         control={form.control}
                                         name="name"
@@ -182,20 +202,23 @@ export const SignUpView = () => {
                                     <Button
                                         variant="outline"
                                         type="button"
-                                        className="w-full cursor-pointer">
-                                        Google
+                                        className="w-full cursor-pointer"
+                                        onClick={()=>{onSocial("google")}}
+                                        >
+                                        <FaGoogle/>
                                     </Button>
                                     <Button
                                         variant="outline"
                                         type="button"
-                                        className="w-full cursor-pointer">
-                                        Github
+                                        className="w-full cursor-pointer"
+                                        onClick={() => onSocial("github")}>
+                                        <FaGithub/>
                                     </Button>
                                 </div>
                                 <div className="text-center text-sm">
                                     Already have an account{" "}
                                     <Link href="/sign-in" className="underline underline-offset-4">
-                                    Sign In
+                                        Sign In
                                     </Link>
 
                                 </div>

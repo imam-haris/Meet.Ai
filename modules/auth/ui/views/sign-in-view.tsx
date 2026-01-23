@@ -14,6 +14,7 @@ import {
     FormField,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import { FaGithub , FaGoogle } from "react-icons/fa";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { OctagonAlertIcon } from "lucide-react";
@@ -51,6 +52,24 @@ export const SignInView = () => {
         )
         setPending(false);
 
+    }
+    const onSocial = (provider : "github" | "google") => {
+        setError(null);
+        setPending(true);
+        authClient.signIn.social(
+            {
+                provider: provider
+            },
+            {
+                onSuccess: () => {
+                    router.push("/");
+                },
+                onError: ({ error }) => {
+                    setError(error.message);
+                }
+            }
+        )
+        setPending(false);
     }
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -139,14 +158,18 @@ export const SignInView = () => {
                                     <Button
                                         variant="outline"
                                         type="button"
-                                        className="w-full cursor-pointer">
-                                        Google
+                                        className="w-full cursor-pointer"
+                                        onClick={()=>{onSocial("google")}}
+                                        >
+                                        <FaGithub/>
                                     </Button>
                                     <Button
                                         variant="outline"
                                         type="button"
-                                        className="w-full cursor-pointer">
-                                        Github
+                                        className="w-full cursor-pointer"
+                                        onClick={()=>onSocial("github")}
+                                        >
+                                        <FaGoogle/>
                                     </Button>
                                 </div>
                                 <div className="text-center text-sm">
