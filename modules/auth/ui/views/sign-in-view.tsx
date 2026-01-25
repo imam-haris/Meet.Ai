@@ -14,7 +14,7 @@ import {
     FormField,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { FaGithub , FaGoogle } from "react-icons/fa";
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { OctagonAlertIcon } from "lucide-react";
@@ -31,21 +31,21 @@ const formSchema = z.object({
 
 export const SignInView = () => {
     const router = useRouter();
-    const [error,setError] = useState<String | null>(null);
-    const [pending , setPending] = useState(false);
-    const onSubmit = (data: z.infer<typeof formSchema>) =>{
+    const [error, setError] = useState<String | null>(null);
+    const [pending, setPending] = useState(false);
+    const onSubmit = (data: z.infer<typeof formSchema>) => {
         setError(null);
         setPending(true);
         authClient.signIn.email(
             {
-                email : data.email,
-                password : data.password
+                email: data.email,
+                password: data.password
             },
             {
-                onSuccess : ()=>{
+                onSuccess: () => {
                     router.push("/");
                 },
-                onError : ({error}) =>{
+                onError: ({ error }) => {
                     setError(error.message)
                 }
             },
@@ -53,7 +53,7 @@ export const SignInView = () => {
         setPending(false);
 
     }
-    const onSocial = (provider : "github" | "google") => {
+    const onSocial = (provider: "github" | "google") => {
         setError(null);
         setPending(true);
         authClient.signIn.social(
@@ -159,30 +159,30 @@ export const SignInView = () => {
                                         variant="outline"
                                         type="button"
                                         className="w-full cursor-pointer"
-                                        onClick={()=>{onSocial("google")}}
-                                        >
-                                        <FaGithub/>
+                                        onClick={() => { onSocial("google") }}
+                                    >
+                                        <FaGithub />
                                     </Button>
                                     <Button
                                         variant="outline"
                                         type="button"
                                         className="w-full cursor-pointer"
-                                        onClick={()=>onSocial("github")}
-                                        >
-                                        <FaGoogle/>
+                                        onClick={() => onSocial("github")}
+                                    >
+                                        <FaGoogle />
                                     </Button>
                                 </div>
                                 <div className="text-center text-sm">
                                     Don&apos;t have an account?{" "}
                                     <Link href="/sign-up" className="underline underline-offset-4">
-                                    Sign up
+                                        Sign up
                                     </Link>
 
                                 </div>
                             </div>
                         </form>
                     </Form>
-                    <div className="bg-radial from-green-700 to-green-900 relative hidden md:flex flex-col
+                    <div className="bg-radial from-sidebar-accent to-sidebar relative hidden md:flex flex-col
                     gap-y-4 items-center justify-center">
                         <img src="/logo.svg" alt="Image" className="h-[92px] w-[92px]" />
                         <p className="text-2xl font semibold text-white">
