@@ -41,7 +41,6 @@ export const DashboardNavbar = () =>{
                     <span className="text-xs">&#8984;</span>
                 </kbd>
             </Button>
-            
         </nav>
 
         </>
