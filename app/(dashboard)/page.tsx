@@ -8,12 +8,14 @@ const page = async () =>{
     headers: await headers(),
   })
   if(!session){
-    return (
       redirect("/sign-in")
-    )
+    
   }
   return (
+    <>
     <HomeView/>
+    </>
+    
   )
 }
-export default page; 
+export default page;
