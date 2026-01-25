@@ -54,3 +54,8 @@ Form Field requires <FormField
   name="email"
   render={({ field }) => ( ... )}
 />
+
+##
+keydown → finger touches the key
+
+keyup → finger leaves the key
