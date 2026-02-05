@@ -54,6 +54,9 @@ Form Field requires <FormField
   name="email"
   render={({ field }) => ( ... )}
 />
+## MUTATE AND QUERY IN REACT + tRPC/ React Query Concept
+query = read data
+mutate = change data
 
 ##
 keydown → finger touches the key
