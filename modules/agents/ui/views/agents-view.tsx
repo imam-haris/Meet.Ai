@@ -7,39 +7,49 @@ import { Button } from "@/components/ui/button";
 import { useTRPC } from "@/trpc/client"
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { DataTable } from "../components/data-table";
-import { columns} from "../components/columns";
+import { columns } from "../components/columns";
 import { EmptyState } from "@/components/empty-state";
+import { useAgentsFilter } from "../../hooks/use-agents-filter";
+import { DataPagination } from "../components/data-pagination";
 
-export const AgentsView = () =>{
+export const AgentsView = () => {
     const trpc = useTRPC();
-    const { data, isLoading, isError } = useSuspenseQuery(trpc.agents.getMany.queryOptions());
+    const [filters, setFilters] = useAgentsFilter();
+    const { data, isLoading, isError } = useSuspenseQuery(trpc.agents.getMany.queryOptions({
+        ...filters
+    }));
     return (
         <div className="flex-1 pb-4 px-4 md:px-8 flex flex-col gap-y-4">
-            
-            <DataTable data={data} columns={columns}/>
-            {data.length === 0 && (
+
+            <DataTable data={data.items} columns={columns} />
+            <DataPagination
+            page={filters.page}
+            totalPages={data.totalPages}
+            onPageChanges={(page)=> setFilters({page})}
+            />
+            {data.items.length === 0 && (
                 <EmptyState
-                title="Create your first agent"
-                description="Create an agent to join your meetings. Each agent will follow your instructions 
+                    title="Create your first agent"
+                    description="Create an agent to join your meetings. Each agent will follow your instructions 
                 ans can interact with participants during the call"/>
             )}
         </div>
     )
 }
-export const AgentsViewLoading = () =>{
+export const AgentsViewLoading = () => {
     return (
         <LoadingState
-        title="Loading Agents"
-        description="This may take a few seconds..."
+            title="Loading Agents"
+            description="This may take a few seconds..."
         />
     )
 }
 
-export const AgentsViewError = ()=>{
+export const AgentsViewError = () => {
     return (
         <ErrorState
-        title="Error Loading Agents"
-        description="Something went wrong"
+            title="Error Loading Agents"
+            description="Something went wrong"
         />
     )
 }
