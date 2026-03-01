@@ -44,14 +44,37 @@ export const meetingsRouter = createTRPCRouter({
                     //TODO: CREATE STREAM CALL, UPSERT STREAM USER 
                 return createdMeeting;
             }),
+    //REMOVE THE MEETING
+    remove: protectedProcedure
+            .input(z.object({id:z.string()}))
+            .mutation(async ({ ctx, input})=>{
+                const [removedMeeting] = await db
+                .delete(meetings)
+                .where(
+                    and(
+                        eq(meetings.id , input.id),
+                        eq(meetings.userId ,ctx.auth.user.id),
+                    )
+                )
+                .returning()
+                if(!removedMeeting){
+                    throw new TRPCError({
+                        code: "NOT_FOUND",
+                        message: "Meeting not found"
+                    });
+                }
+                return removedMeeting;
+            }),
     //GET ONE MEETING
     getOne: protectedProcedure.input(z.object({ id: z.string() })).query(async ({ input, ctx }) => {
         const [existingMeetings] = await db
             .select({
                 ...getTableColumns(meetings),
-
+                agent : agents,
+                duration: sql<number>`EXTRACT(EPOCH from (${meetings.endedAt} - ${meetings.startedAt}))` .as("duration"),
             })
             .from(meetings)
+            .innerJoin(agents, eq(meetings.agentId , agents.id))
             .where(and(
                 eq(meetings.id, input.id),
                 eq(meetings.userId, ctx.auth.user.id),
