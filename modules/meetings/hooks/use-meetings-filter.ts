@@ -1,0 +1,20 @@
+import { DEFAULT_PAGE } from "@/constants";
+import { parseAsInteger , parseAsString, useQueryStates, parseAsStringEnum } from "nuqs";
+import { MeetingStatus } from "../types";
+export const useMeetingsFilter = () =>{
+    return useQueryStates({
+        search : parseAsString.withDefault("").withOptions({clearOnDefault : true}),
+        page: parseAsInteger.withDefault(DEFAULT_PAGE).withOptions({clearOnDefault: true}),
+        status : parseAsStringEnum(Object.values(MeetingStatus)),
+        agentId : parseAsString.withDefault("").withOptions({clearOnDefault: true}),
+    })
+};
+
+//localhost:3000?search=hello <===> useState()
+
+
+//useQueryStates → hook to sync state with URL
+
+// parseAsString → read/write string query params
+
+// parseAsInteger → read/write number query params
