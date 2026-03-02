@@ -9,6 +9,10 @@ import { toast } from "sonner";
 import { useConfirm } from "@/hooks/use-confirm";
 import { UpdateMeetingDialog } from "./update-meeting-dialog";
 import { useState } from "react";
+import { UpcomingState } from "./upcoming-state";
+import { ActiveState } from "./active-state";
+import { CancelledState } from "./cancelled-state";
+import { ProcessingState } from "./processing-state";
 
 interface Props{
     meetingId: string
@@ -40,6 +44,11 @@ export const MeetingIdView = ({meetingId}: Props)=>{
         if(!ok)return;
         await removeMeeting.mutateAsync({id:meetingId})
     }
+    const isActive = data.status === "active";
+    const isUpcoming = data.status === "upcoming";
+    const isCancelled = data.status === "cancelled";
+    const isCompleted = data.status === "completed";
+    const isProcessing = data.status === "processing";
 return (
     <>
     <RemoveConfirmation/>
@@ -54,7 +63,17 @@ return (
     onEdit={()=>setUpdateMeetingDialog(true)}
     onRemove={handleRemoveMeeting}
     />
-    {JSON.stringify(data,null,2)}
+    {isCancelled && <CancelledState/>}
+
+    {isUpcoming && (<UpcomingState
+    meetingId={meetingId}
+    onCancelMeeting={()=> {}}
+    isCancelling={false}
+    />)}
+    {isActive && (<ActiveState meetingId={meetingId}/>)}
+    {isProcessing && <ProcessingState/>}
+    {isCompleted && <div>Completed</div>}
+
     </div>
     </>
 )
