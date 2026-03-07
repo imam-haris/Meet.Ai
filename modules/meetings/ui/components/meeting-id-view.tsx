@@ -13,6 +13,7 @@ import { UpcomingState } from "./upcoming-state";
 import { ActiveState } from "./active-state";
 import { CancelledState } from "./cancelled-state";
 import { ProcessingState } from "./processing-state";
+import { CompletedState } from "./completed-state";
 
 interface Props{
     meetingId: string
@@ -72,7 +73,7 @@ return (
     />)}
     {isActive && (<ActiveState meetingId={meetingId}/>)}
     {isProcessing && <ProcessingState/>}
-    {isCompleted && <div>Completed</div>}
+    {isCompleted && <CompletedState data={data}/>}
 
     </div>
     </>
